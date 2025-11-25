@@ -104,7 +104,8 @@ def ProfileSelector():
         action = input("\nWhat do you want to do?\n"
               "1. Go back to the profile selector\n"
               "2. Edit lunar coins\n"
-              "3. Edit artifact of rebirth item\n\n").strip()
+              "3. Edit artifact of rebirth item\n"
+              "4. Quit\n\n").strip()
 
         if action.isdigit():
             action = int(action)
@@ -139,6 +140,9 @@ def ProfileSelector():
                         rebirth_tag.text = new_item
                     tree.write(selected_file, encoding="utf-8", xml_declaration=True)
                     print(f"RebirthItem updated to {new_item}!")
+
+            elif action == 4:
+                break
 
             else:
                 print("Invalid selection.")
