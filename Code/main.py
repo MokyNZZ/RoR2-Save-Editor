@@ -38,22 +38,17 @@ if not FoundFiles:
     quit()
 else:  # Create Backups
     BACKUP_DIR = Path("./Backups")
-    # Create timestamped folder
     time_str = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f")[:-4]
     backup_path = BACKUP_DIR / time_str
     backup_path.mkdir(parents=True, exist_ok=True)
 
-    # Copy files into the new backup folder
     for file in FoundFiles:
         shutil.copy2(file, backup_path)
 
-    # --- Keep only last 10 backups ---
-    # Get all backup folders
     backups = sorted([d for d in BACKUP_DIR.iterdir() if d.is_dir()])
 
-    # If more than 10, delete the oldest
     while len(backups) > 10:
-        old = backups.pop(0)  # remove oldest
+        old = backups.pop(0)  
         shutil.rmtree(old)
 
 for File in FoundFiles:
