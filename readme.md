@@ -1,5 +1,6 @@
 # To Do
 - Check that the profile has rebirth unlocked
+- Let the user use the backups without having to go into file explorer
 
 
 # Done
