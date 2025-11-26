@@ -1,6 +1,8 @@
 # To Do
 - Check that the profile has rebirth unlocked
 - Let the user use the backups without having to go into file explorer
+- Convert item names to IDs for rebirth item
+- Fix capitalisation automatically for the user
 
 
 # Done
