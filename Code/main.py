@@ -1,4 +1,6 @@
 import xml.etree.ElementTree as ET
+import json
+import re
 import string
 import datetime
 from pathlib import Path
@@ -15,6 +17,7 @@ Drives = [f"{d}:\\" for d in string.ascii_uppercase if os.path.exists(f"{d}:\\")
 FoundFiles = []
 FoundNames = []
 FoundParseError = []
+ALIASES = {}
 
 for Drive in Drives:
     BasePath = Path(Drive) / "Program Files (x86)" / "Steam" / "userdata"
@@ -65,6 +68,10 @@ for File in FoundFiles:
         FoundParseError.append(File)
     except Exception as e:
         print(f"Error reading {File}: {e}")
+
+def resolve_item(user_input: str):
+    key = re.sub(r"[^a-z0-9]", "", user_input.lower())
+    return ALIASES.get(key, None)
 
 def ProfileSelector():
     while True:
@@ -129,11 +136,24 @@ def ProfileSelector():
                     print("Invalid input. Must be a number.")
 
             elif action == 3:  # Edit Artifact of Rebirth
+
+                try:
+                    with open(".\\Code\\items.json") as file:
+                        Items = json.loads(file.read())
+
+                    for item_id, names in Items.items():
+                        for name in names:
+                            key = name.lower().replace(" ", "")
+                            ALIASES[key] = item_id
+                except:
+                    print("Something went wrong opening the items file!")
+                    input("Press enter to close...")
+                    break
                 clear_console()
                 for rebirth_tag in root.iter("RebirthItem"):
                     current = rebirth_tag.text.strip() if rebirth_tag.text else "(empty)"
                     print(f"Current RebirthItem: {current}")
-                new_item = input("Enter new RebirthItem value: ").strip()
+                new_item = resolve_item(input("Enter new RebirthItem value: "))
                 if new_item:
                     new_item = f"ItemIndex.{new_item}"
                     for rebirth_tag in root.iter("RebirthItem"):
