@@ -14,31 +14,32 @@ def find_profiles():
     system = platform.system()
     profiles = []
 
-    try:
-        if system == "Linux": # I use arch btw
-            print("Linux")
-            userdata = Path.home() / ".local/share/Steam/userdata"
+    if system == "Linux": # I use arch btw
+        print("Linux")
+        userdata = Path.home() / ".local/share/Steam/userdata"
 
-    except:
-        pass
+    if system == "Windows":
+        print("Windows")
+        userdata = Path("C:\\Program Files (x86)\\Steam\\userdata")
 
-    try:
-        for user in userdata.iterdir():
-            if user.is_dir():
-                user = Path(user) / "632360/remote/UserProfiles"
+    
+    for user in userdata.iterdir():
+        if user.is_dir():
+            user = Path(user) / "632360/remote/UserProfiles"
+            print("File not Found")
 
+            try:
                 for profile in user.iterdir():
                     if profile.suffix == ".xml":
                         profiles.append(profile)
-    except:
-        pass
+            except FileNotFoundError:
+                pass
 
                         
 
     return profiles
 
-
-print(platform.system())
+print(Path.home())
 
 print(find_profiles())
 
