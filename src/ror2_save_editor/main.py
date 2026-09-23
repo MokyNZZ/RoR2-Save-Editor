@@ -10,24 +10,35 @@ clear_console()
 
 # Find install location
 
-def find_profiles() -> List:
+def find_profiles():
     system = platform.system()
     profiles = []
 
-    if system == "Linux": # I use arch btw
-        print("Linux")
-        userdata = Path.home() / ".local/share/Steam/userdata"
+    try:
+        if system == "Linux": # I use arch btw
+            print("Linux")
+            userdata = Path.home() / ".local/share/Steam/userdata"
 
+    except:
+        pass
+
+    try:
         for user in userdata.iterdir():
             if user.is_dir():
                 user = Path(user) / "632360/remote/UserProfiles"
 
                 for profile in user.iterdir():
                     if profile.suffix == ".xml":
-                        print(profile)
+                        profiles.append(profile)
+    except:
+        pass
+
+                        
 
     return profiles
 
+
+print(platform.system())
 
 print(find_profiles())
 
